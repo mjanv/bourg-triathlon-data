@@ -10,6 +10,7 @@ from scipy.stats import norm
 
 import matplotlib.pyplot as plt
 import matplotlib.mlab as mlab
+import matplotlib
 
 import sys, urllib
 import bs4 as bs
@@ -90,18 +91,20 @@ def plot_bourgdata(N1,N2):
 	(mu15, sigma15) = norm.fit(S15)
 
 	N_BINS = 50
-	n, bins, patches = plt.hist(S14, N_BINS, normed=1, facecolor='red', alpha=0.5,label=r'$\mathrm{2014:}\ \mu=%.3f,\ \sigma=%.3f$' %(mu14, sigma14))
+	fig = plt.figure()
+	ax = fig.add_subplot(1, 1, 1)
+	n, bins, patches = ax.hist(S14, N_BINS,normed=1, facecolor='red', alpha=0.5,label=r'$\mathrm{2014:}\ \mu=%.3f,\ \sigma=%.3f$' %(mu14, sigma14))
 	y = mlab.normpdf( bins, mu14, sigma14)
-	l = plt.plot(bins, y, 'r-', linewidth=3)
-	n, bins, patches = plt.hist(S15, N_BINS, normed=1, facecolor='green', alpha=0.5,label=r'$\mathrm{ 2015:}\ \mu=%.3f,\ \sigma=%.3f$' %(mu15, sigma15))
+	l = ax.plot(bins, y, 'r-', linewidth=4)
+	n, bins, patches = ax.hist(S15, N_BINS, normed=1, facecolor='green', alpha=0.5,label=r'$\mathrm{ 2015:}\ \mu=%.3f,\ \sigma=%.3f$' %(mu15, sigma15))
 	y = mlab.normpdf( bins, mu15, sigma15)
-	l = plt.plot(bins, y, 'g-', linewidth=3)
+	l = ax.plot(bins, y, 'g-', linewidth=4)
 
-	plt.xlabel('Scratch Time (minutes)')
-	plt.ylabel('Number of athletes per scratch time (normalized)')
-
-	plt.legend(loc='best', fancybox=True, framealpha=0.5)
-	plt.title(r'$\mathrm{Athletes\ from\ rank\ } %d \mathrm{\ to\ } %d$' %(N1, N2))
+	fig.tight_layout()
+	ax.set_xlabel('Scratch Time (minutes)')
+	ax.set_ylabel('Number of athletes per scratch time (normalized)')
+	ax.legend(loc='best', fancybox=True, framealpha=0.5)
+	ax.set_title(r'$\mathrm{Athletes\ from\ rank\ } %d \mathrm{\ to\ } %d$' %(N1, N2))
 
 	plt.show()
 	
